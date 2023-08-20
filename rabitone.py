@@ -22,13 +22,18 @@ arrow = pygame.image.load("resources/images/bullet.png")
 badguyimg = pygame.image.load("resources/images/badguy.png")
 healthbar = pygame.image.load("resources/images/healthbar.png")
 health = pygame.image.load("resources/images/health.png")
+gameover = pygame.image.load("resources/images/gameover.png")
+youwin = pygame.image.load("resources/images/youwin.png")
 
 keys = [False, False, False, False]
 playpos = [100,100]
 
 # 4. 계속 화면이 보이도록 한다.
 
-while True:
+running = 1
+exitcode = 0
+
+while running:
   badtimer-=1
   # 5. 화면을 깨끗하게 한다.
   screen.fill((0,0,0))  # (R,G,B)
@@ -109,7 +114,7 @@ while True:
   
   # 6.4 - Draw clock
   font = pygame.font.Font(None, 24)
-  survivedtext = font.render(str(int(90000-pygame.time.get_ticks()))+":"\
+  survivedtext = font.render(str(int((90000-pygame.time.get_ticks())/60000))+":"\
                              +str(int((90000-pygame.time.get_ticks())/1000%60)).zfill(2), True, (0,0,0))
   textRect = survivedtext.get_rect()
   textRect.topright=[635,5]
@@ -168,4 +173,3 @@ while True:
       playpos[0] = playpos[0] + 5
     
     # 10 - Win/Lose check
-    
