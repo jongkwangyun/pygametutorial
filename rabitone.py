@@ -6,11 +6,14 @@ import math
 pygame.init()
 width, height = 640, 480
 screen = pygame.display.set_mode((width, height))
+acc = [0,0]
+arrows = []
 
 # 3. 이미지를 가져온다.
 player = pygame.image.load("resources/images/dude.png")
 grass = pygame.image.load("resources/images/grass.png")
 castle = pygame.image.load("resources/images/castle.png")
+arrow = pygame.image.load("resources/images/bullet.png")
 
 keys = [False, False, False, False]
 playpos = [100,100]
@@ -68,6 +71,12 @@ while True:
         keys[2] = False
       elif event.key == pygame.K_d:
         keys[3] = False
+
+    if event.type == pygame.MOUSEBUTTONDOWN:
+      position = pygame.mouse.get_pos()
+      acc[1] = acc[1]+1
+      arrows.append([math.atan2(position[1]-(playpos[1]+32), position[0]-(playpos[0]+26)), \
+                     playerpos1[0]+32, playerpos1[1]+32])
 
     # 9 - Move player
     if keys[0]:
