@@ -33,7 +33,7 @@ playpos = [100,100]
 hit = pygame.mixer.Sound("resources/audio/explode.wav")
 enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
 shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
-hit.set_volume(0.05)ㄴ
+hit.set_volume(0.05)
 enemy.set_volume(0.05)
 shoot.set_volume(0.05)
 pygame.mixer.music.load('resources/audio/moonlight.wav')
