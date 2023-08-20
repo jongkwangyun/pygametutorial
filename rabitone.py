@@ -20,6 +20,8 @@ grass = pygame.image.load("resources/images/grass.png")
 castle = pygame.image.load("resources/images/castle.png")
 arrow = pygame.image.load("resources/images/bullet.png")
 badguyimg = pygame.image.load("resources/images/badguy.png")
+healthbar = pygame.image.load("resources/images/healthbar.png")
+health = pygame.image.load("resources/images/health.png")
 
 keys = [False, False, False, False]
 playpos = [100,100]
@@ -86,11 +88,37 @@ while True:
     if badrect.left<64:
       healthvalue -= random.randint(5,20)
       badguys.pop(index)
+
+    # 6.3.2 - Check for collisions
+    index1=0
+    for bullet in arrows:
+      bullrect=pygame.Rect(arrow.get_rect())
+      bullrect.left=bullet[1]
+      bullrect.top=bullet[2]
+      if badrect.colliderect(bullrect):
+        acc[0]+=1
+        badguys.pop(index)
+        arrows.pop(index1)
+      index1+=1
+
     # 6.3.3 - Next bad guy
       
     index+=1
   for badguy in badguys:
     screen.blit(badguyimg, badguy)
+  
+  # 6.4 - Draw clock
+  font = pygame.font.Font(None, 24)
+  survivedtext = font.render(str(int(90000-pygame.time.get_ticks()))+":"\
+                             +str(int((90000-pygame.time.get_ticks())/1000%60)).zfill(2), True, (0,0,0))
+  textRect = survivedtext.get_rect()
+  textRect.topright=[635,5]
+  screen.blit(survivedtext, textRect)
+
+  # 6.5 - Draw health bar
+  screen.blit(healthbar, (5,5))
+  for health1 in range(healthvalue):
+    screen.blit(health, (health1+8,8))
   
   # 7. 화면을 다시 그린다.
   pygame.display.flip()
@@ -138,3 +166,6 @@ while True:
       playpos[0] = playpos[0] - 5
     elif keys[3]:
       playpos[0] = playpos[0] + 5
+    
+    # 10 - Win/Lose check
+    
