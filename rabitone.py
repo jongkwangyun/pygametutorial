@@ -1,6 +1,7 @@
 # 1. 파이게임 모듈을 불러온다.
 import pygame
 import math
+import random
 
 # 2. 초기화 시킨다.
 pygame.init()
@@ -8,12 +9,17 @@ width, height = 640, 480
 screen = pygame.display.set_mode((width, height))
 acc = [0,0]
 arrows = []
+badtimer = 100
+badtimer1 = 0
+badguys = [[640,100]]
+healthvalue = 194
 
 # 3. 이미지를 가져온다.
 player = pygame.image.load("resources/images/dude.png")
 grass = pygame.image.load("resources/images/grass.png")
 castle = pygame.image.load("resources/images/castle.png")
 arrow = pygame.image.load("resources/images/bullet.png")
+badguyimg = pygame.image.load("resources/images/badguy.png")
 
 keys = [False, False, False, False]
 playpos = [100,100]
@@ -21,6 +27,7 @@ playpos = [100,100]
 # 4. 계속 화면이 보이도록 한다.
 
 while True:
+  badtimer-=1
   # 5. 화면을 깨끗하게 한다.
   screen.fill((0,0,0))  # (R,G,B)
 
@@ -55,6 +62,35 @@ while True:
     for projectile in arrows:
       arrow1 = pygame.transform.rotate(arrow, 360-projectile[0]*57.29)
       screen.blit(arrow1, (projectile[1], projectile[2]))
+
+  # 6.3 - Draw Badguys
+  if badtimer==0:
+    badguys.append([640, random.randint(50,430)])
+    badtimer=100-(badtimer1*2)
+    if badtimer1>=35:
+      badtimer1=35
+    else:
+      badtimer1+=5
+
+  index=0
+  for badguy in badguys:
+    if badguy[0]<-64:
+      badguys.pop(index)
+    else:
+      badguy[0]-=7
+
+    # 6.3.1 - Attack castle
+    badrect=pygame.Rect(badguyimg.get_rect())
+    badrect.top=badguy[1]
+    badrect.left=badguy[0]
+    if badrect.left<64:
+      healthvalue -= random.randint(5,20)
+      badguys.pop(index)
+    # 6.3.3 - Next bad guy
+      
+    index+=1
+  for badguy in badguys:
+    screen.blit(badguyimg, badguy)
   
   # 7. 화면을 다시 그린다.
   pygame.display.flip()
