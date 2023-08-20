@@ -13,6 +13,7 @@ badtimer = 100
 badtimer1 = 0
 badguys = [[640,100]]
 healthvalue = 194
+pygame.mixer.init()
 
 # 3. 이미지를 가져온다.
 player = pygame.image.load("resources/images/dude.png")
@@ -27,6 +28,17 @@ youwin = pygame.image.load("resources/images/youwin.png")
 
 keys = [False, False, False, False]
 playpos = [100,100]
+
+# 3.1 - Load audio
+hit = pygame.mixer.Sound("resources/audio/explode.wav")
+enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
+shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
+hit.set_volume(0.05)
+enemy.set_volume(0.05)
+shoot.set_volume(0.05)
+pygame.mixer.music.load('resources/audio/moonlight.wav')
+pygame.mixer.music.play(-1, 0.0)
+pygame.mixer.music.set_volume(0.25)
 
 # 4. 계속 화면이 보이도록 한다.
 
@@ -84,13 +96,14 @@ while running:
     if badguy[0]<-64:
       badguys.pop(index)
     else:
-      badguy[0]-=3
+      badguy[0]-=2
 
     # 6.3.1 - Attack castle
     badrect=pygame.Rect(badguyimg.get_rect())
     badrect.top=badguy[1]
     badrect.left=badguy[0]
     if badrect.left<64:
+      hit.play()
       healthvalue -= random.randint(5,20)
       badguys.pop(index)
 
@@ -101,6 +114,7 @@ while running:
       bullrect.left=bullet[1]
       bullrect.top=bullet[2]
       if badrect.colliderect(bullrect):
+        enemy.play()
         acc[0]+=1
         badguys.pop(index)
         arrows.pop(index1)
@@ -157,6 +171,7 @@ while running:
         keys[3] = False
 
     if event.type == pygame.MOUSEBUTTONDOWN:
+      shoot.play()
       position = pygame.mouse.get_pos()
       acc[1] = acc[1]+1
       arrows.append([math.atan2(position[1]-(playpos[1]+32), position[0]-(playpos[0]+26)), \
@@ -177,8 +192,8 @@ while running:
       running=0
       exitcode=1
     if healthvalue<=0:
-     running=0
-     exitcode=0
+      running=0
+      exitcode=0
     if acc[1]!=0:
       accuracy=round(acc[0]*1.0/acc[1]*100)
     else:
