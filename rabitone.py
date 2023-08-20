@@ -9,7 +9,7 @@ width, height = 640, 480
 screen = pygame.display.set_mode((width, height))
 acc = [0,0]
 arrows = []
-badtimer = 100
+badtimer = 150
 badtimer1 = 0
 badguys = [[640,100]]
 healthvalue = 194
@@ -33,7 +33,7 @@ playpos = [100,100]
 hit = pygame.mixer.Sound("resources/audio/explode.wav")
 enemy = pygame.mixer.Sound("resources/audio/enemy.wav")
 shoot = pygame.mixer.Sound("resources/audio/shoot.wav")
-hit.set_volume(0.05)
+hit.set_volume(0.05)ㄴ
 enemy.set_volume(0.05)
 shoot.set_volume(0.05)
 pygame.mixer.music.load('resources/audio/moonlight.wav')
@@ -70,8 +70,8 @@ while running:
   # 6.2 - Draw arrows
   for bullet in arrows:  # bullet <== [각도, 플레이어의 x좌표, 플레이어의 y좌표]
     index=0
-    velx=math.cos(bullet[0])*10
-    vely=math.sin(bullet[0])*10
+    velx=math.cos(bullet[0])*5
+    vely=math.sin(bullet[0])*5
     bullet[1]+=velx
     bullet[2]+=vely
     if bullet[1]<-64 or bullet[1]>640 or bullet[2]<-64 or bullet[2]>480:
@@ -85,7 +85,7 @@ while running:
   # 6.3 - Draw Badguys
   if badtimer==0:
     badguys.append([640, random.randint(50,430)])
-    badtimer=100-(badtimer1*2)
+    badtimer=150-(badtimer1*2)
     if badtimer1>=35:
       badtimer1=35
     else:
