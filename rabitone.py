@@ -40,6 +40,21 @@ while True:
   playerrot = pygame.transform.rotate(player, 360-angle*57.29)
   playerpos1 = (playpos[0]-playerrot.get_rect().width//2, playpos[1]-playerrot.get_rect().height//2)
   screen.blit(playerrot, playerpos1)
+
+  # 6.2 - Draw arrows
+  for bullet in arrows:  # bullet <== [각도, 플레이어의 x좌표, 플레이어의 y좌표]
+    index=0
+    velx=math.cos(bullet[0])*10
+    vely=math.sin(bullet[0])*10
+    bullet[1]+=velx
+    bullet[2]+=vely
+    if bullet[1]<-64 or bullet[1]>640 or bullet[2]<-64 or bullet[2]>480:
+      arrows.pop(index)
+    index+=1
+
+    for projectile in arrows:
+      arrow1 = pygame.transform.rotate(arrow, 360-projectile[0]*57.29)
+      screen.blit(arrow1, (projectile[1], projectile[2]))
   
   # 7. 화면을 다시 그린다.
   pygame.display.flip()
